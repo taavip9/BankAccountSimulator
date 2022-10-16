@@ -11,9 +11,6 @@ import java.math.BigDecimal;
 @SpringBootApplication
 public class BankAccountSimulatorApplication {
 
-	@Autowired
-	private AccountRepository accountRepository;
-
 	public static void main(String[] args) {
 		SpringApplication.run(BankAccountSimulatorApplication.class, args);
 	}
