@@ -1,0 +1,15 @@
+button {
+  margin-right: 5px;
+}
+
+.alert-area{
+  height: 60px;
+}
+
+input {
+  border-bottom: 5px solid !important;
+}
+
+#transfer-button{
+  margin-top: 10px;
+}

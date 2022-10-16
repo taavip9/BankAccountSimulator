@@ -1,0 +1,80 @@
+<div class="content" role="main">
+  <h2 class="card-title text-center">{{ title }}</h2>
+  <ul class="text-center list-inline py-3">
+    <li class="list-inline-item">
+      <button (click)="createEmptyAccountRow()" class="btn btn-info">Add new bank account</button>
+    </li>
+  </ul>
+  <ul class="text-center list-inline py-3 alert-area">
+    <li class="list-inline-item">
+      <div *ngIf="message != null && message">
+        <div *ngIf="!isErrorMessage" class="alert alert-success">{{this.message}}</div>
+        <div *ngIf="isErrorMessage" class="alert alert-danger">{{this.message}}</div>
+      </div>
+    </li>
+  </ul>
+  <div class="card my-5">
+    <div class="card-body">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Currency</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let account of accounts">
+          <td><input type="text" [(ngModel)]="account.name" [disabled]="!account.isEditable"></td>
+          <td><input type="text" [(ngModel)]="account.amount" [disabled]="!account.isEditable"></td>
+          <td>
+            <select [disabled]="!account.isEditable" [(ngModel)]=account.currency class="form-control">
+              <option >EUR</option>
+              <option>USD</option>
+            </select>
+          </td>
+          <td>
+            <button (click)="toggleEdit(account)"
+                    class="btn btn-info">{{!account.isEditable ? "Edit" : "Save"}}</button>
+          </td>
+          <td>
+            <button (click)="deleteAccount(account)" class="btn btn-info">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card my-5">
+    <div class="card-body text-center">
+      <h3 class="card-title text-center">Transfer funds between your accounts</h3>
+      <li class="list-inline-item">
+        <tr>
+          <td>Whithdrawal account:</td>
+          <td>
+            <select type="number" class="form-control" (change)="onSourceAccountChanged()" [(ngModel)]="this.sourceAccountId">
+              <option type="number"  *ngFor="let sourceAccount of accounts" name="source-account-option" ngDefaultControl value="{{sourceAccount.id}}">{{sourceAccount.id}} {{sourceAccount.name}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Deposit account:</td>
+          <td>
+            <select type="number" class="form-control" [(ngModel)]="this.targetAccountId">
+              <option type="number" *ngFor="let targetAccount of potentialDepositAccounts" name="target-account-option" ngDefaultControl value="{{targetAccount.id}}">{{targetAccount.id}} {{targetAccount.name}}</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Transfer amount:</td>
+          <td>
+            <input  type="number" value="" [(ngModel)]="payment.paymentAmount">
+          </td>
+        </tr>
+        <button (click)="transferFundsBetweenAccounts()" id="transfer-button" class="btn btn-info">Transfer funds</button>
+      </li>
+    </div>
+  </div>
+</div>
