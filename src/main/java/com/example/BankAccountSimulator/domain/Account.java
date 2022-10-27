@@ -1,16 +1,21 @@
 package com.example.BankAccountSimulator.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class Account {
 
-    public enum AccountCurrency{
+    public enum AccountCurrency {
         USD,
         EUR
     }
@@ -22,12 +27,4 @@ public class Account {
     private AccountCurrency currency;
     private String name;
 
-    public Account() {
-
-    }
-    public Account(BigDecimal amount, AccountCurrency currency, String name) {
-        this.amount = amount;
-        this.currency = currency;
-        this.name = name;
-    }
 }
