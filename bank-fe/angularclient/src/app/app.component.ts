@@ -2,7 +2,6 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {AccountService} from "../service/account-service.service";
 import {Account} from "../model/account";
 import {Payment} from "../model/payment";
-import {timeout} from "rxjs";
 
 @Component({
   selector: 'app-root',
