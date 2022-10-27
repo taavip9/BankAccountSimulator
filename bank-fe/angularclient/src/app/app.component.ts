@@ -102,10 +102,10 @@ export class AppComponent {
   }
 
   public transferFundsBetweenAccounts() {
-    var account1 = this.accounts.find(account => parseInt(this.sourceAccountId) === account.id);
-    var account2 = this.accounts.find(account => parseInt(this.targetAccountId) === account.id);
-    this.payment.sourceAccount = account1 ? account1 : new Account();
-    this.payment.targetAccount = account2 ? account2 : new Account();
+    var sourceAccount = this.accounts.find(account => parseInt(this.sourceAccountId) === account.id);
+    var targetAccount = this.accounts.find(account => parseInt(this.targetAccountId) === account.id);
+    this.payment.sourceAccount = sourceAccount ? sourceAccount : new Account();
+    this.payment.targetAccount = targetAccount ? targetAccount : new Account();
     this.accountService.transferFundsBetweenAccounts(this.payment).subscribe(data => {
       var sourceAccount = this.accounts.find(account => data.sourceAccount.id === account.id);
       if (sourceAccount) {
