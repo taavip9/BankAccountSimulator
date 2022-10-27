@@ -31,7 +31,7 @@
           <td><input type="text" [(ngModel)]="account.amount" [disabled]="!account.isEditable"></td>
           <td>
             <select [disabled]="!account.isEditable" [(ngModel)]=account.currency class="form-control">
-              <option >EUR</option>
+              <option>EUR</option>
               <option>USD</option>
             </select>
           </td>
@@ -54,8 +54,10 @@
         <tr>
           <td>Whithdrawal account:</td>
           <td>
-            <select type="number" class="form-control" (change)="onSourceAccountChanged()" [(ngModel)]="this.sourceAccountId">
-              <option type="number"  *ngFor="let sourceAccount of accounts" name="source-account-option" ngDefaultControl value="{{sourceAccount.id}}">{{sourceAccount.id}} {{sourceAccount.name}}</option>
+            <select type="number" class="form-control" (change)="onSourceAccountChanged()"
+                    [(ngModel)]="this.sourceAccountId">
+              <option type="number" *ngFor="let sourceAccount of accounts" name="source-account-option" ngDefaultControl
+                      value="{{sourceAccount.id}}">{{sourceAccount.id}} {{sourceAccount.name}}</option>
             </select>
           </td>
         </tr>
@@ -63,17 +65,19 @@
           <td>Deposit account:</td>
           <td>
             <select type="number" class="form-control" [(ngModel)]="this.targetAccountId">
-              <option type="number" *ngFor="let targetAccount of potentialDepositAccounts" name="target-account-option" ngDefaultControl value="{{targetAccount.id}}">{{targetAccount.id}} {{targetAccount.name}}</option>
+              <option type="number" *ngFor="let targetAccount of potentialDepositAccounts" name="target-account-option"
+                      ngDefaultControl value="{{targetAccount.id}}">{{targetAccount.id}} {{targetAccount.name}}</option>
             </select>
           </td>
         </tr>
         <tr>
           <td>Transfer amount:</td>
           <td>
-            <input  type="number" value="" [(ngModel)]="payment.paymentAmount">
+            <input type="number" value="" [(ngModel)]="payment.paymentAmount">
           </td>
         </tr>
-        <button (click)="transferFundsBetweenAccounts()" id="transfer-button" class="btn btn-info">Transfer funds</button>
+        <button (click)="transferFundsBetweenAccounts()" id="transfer-button" class="btn btn-info">Transfer funds
+        </button>
       </li>
     </div>
   </div>
