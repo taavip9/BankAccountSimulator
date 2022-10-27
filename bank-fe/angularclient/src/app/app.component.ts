@@ -2,6 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 import {AccountService} from "../service/account-service.service";
 import {Account} from "../model/account";
 import {Payment} from "../model/payment";
+import {timeout} from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ export class AppComponent {
   targetAccountId: string = '';
   sourceAccountId: string = '';
   isErrorMessage: boolean = false;
+  timeout: any;
 
   constructor(private accountService: AccountService) {
     this.title = 'Bank account Simulator';
@@ -26,8 +28,9 @@ export class AppComponent {
 
   public displayMessageForFiveSeconds(message: string) {
     this.message = message;
+    clearTimeout(this.timeout);
     if (this.message) {
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.message = '';
         this.isErrorMessage = false;
       }, 5000);
@@ -63,6 +66,7 @@ export class AppComponent {
       account.name = data.name;
       account.currency = data.currency;
       account.amount = data.amount;
+      this.isErrorMessage = false;
       this.displayMessageForFiveSeconds('Successfully edited account ' + account.name);
     }, error => {
       this.isErrorMessage = true;
@@ -79,6 +83,7 @@ export class AppComponent {
       account.amount = data.amount;
       this.accounts.push(account);
       this.onSourceAccountChanged();
+      this.isErrorMessage = false;
       this.displayMessageForFiveSeconds('Successfully created new account ' + account.name);
     }, error => {
       this.isErrorMessage = true;
@@ -94,6 +99,7 @@ export class AppComponent {
         this.accounts.splice(index, 1); // 2nd parameter means remove one item only
       }
       this.onSourceAccountChanged();
+      this.isErrorMessage = false;
       this.displayMessageForFiveSeconds('Successfully deleted account ' + account.name);
     }, error => {
       this.isErrorMessage = true;
@@ -115,6 +121,7 @@ export class AppComponent {
       if (targetAccountAfterFundsTransfer) {
         targetAccountAfterFundsTransfer.amount = data.targetAccount.amount;
       }
+      this.isErrorMessage = false;
       this.displayMessageForFiveSeconds('Successfully transfered ' + this.payment.paymentAmount + ' ' +
         sourceAccountAfterFundsTransfer?.currency + ' from account ' + sourceAccountAfterFundsTransfer?.name + ' to account ' + targetAccountAfterFundsTransfer?.name);
     }, error => {
