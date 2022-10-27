@@ -13,6 +13,7 @@
   <artifactId>bank-fe</artifactId>
   <name>bank-fe</name>
   <description>BankAccountSimulator front-end</description>
+  <packaging>pom</packaging>
 
   <build>
     <plugins>
