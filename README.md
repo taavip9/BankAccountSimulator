@@ -1,6 +1,6 @@
 # BankAccountSimulator
 This is a bank account simulator app where the user can create, edit and delete bank accounts.
-In addition, the user can transfer funds between his accounts and convert accounts to use either
+In addition, the user can transfer funds between their accounts and convert accounts to use either
 USD or EUR as currency. The system validates if the user has enough funds for the transfer and that the transfer amount
 isn't zero or negative.
 
