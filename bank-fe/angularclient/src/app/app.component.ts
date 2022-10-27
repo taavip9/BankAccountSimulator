@@ -107,16 +107,16 @@ export class AppComponent {
     this.payment.sourceAccount = sourceAccount ? sourceAccount : new Account();
     this.payment.targetAccount = targetAccount ? targetAccount : new Account();
     this.accountService.transferFundsBetweenAccounts(this.payment).subscribe(data => {
-      var sourceAccount = this.accounts.find(account => data.sourceAccount.id === account.id);
-      if (sourceAccount) {
-        sourceAccount.amount = data.sourceAccount.amount;
+      var sourceAccountAfterFundsTransfer = this.accounts.find(account => data.sourceAccount.id === account.id);
+      if (sourceAccountAfterFundsTransfer) {
+        sourceAccountAfterFundsTransfer.amount = data.sourceAccount.amount;
       }
-      var targetAccount = this.accounts.find(account => data.targetAccount.id === account.id);
-      if (targetAccount) {
-        targetAccount.amount = data.targetAccount.amount;
+      var targetAccountAfterFundsTransfer = this.accounts.find(account => data.targetAccount.id === account.id);
+      if (targetAccountAfterFundsTransfer) {
+        targetAccountAfterFundsTransfer.amount = data.targetAccount.amount;
       }
       this.displayMessageForFiveSeconds('Successfully transfered ' + this.payment.paymentAmount + ' ' +
-        sourceAccount?.currency + ' from account ' + sourceAccount?.name + ' to account ' + targetAccount?.name);
+        sourceAccountAfterFundsTransfer?.currency + ' from account ' + sourceAccountAfterFundsTransfer?.name + ' to account ' + targetAccountAfterFundsTransfer?.name);
     }, error => {
       this.isErrorMessage = true;
       this.displayMessageForFiveSeconds('Transfering ' + this.payment.paymentAmount + ' ' +
