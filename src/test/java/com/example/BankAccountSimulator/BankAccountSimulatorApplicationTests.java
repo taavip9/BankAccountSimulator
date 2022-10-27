@@ -25,26 +25,20 @@ class BankAccountSimulatorApplicationTests {
 
     @BeforeEach
     public void createTestData() {
-        if (accountRepository.findAll().isEmpty()) {
-            Account eurAccount = new Account();
-            eurAccount.setName("eurAccount");
-            eurAccount.setCurrency(Account.AccountCurrency.EUR);
-            eurAccount.setAmount(new BigDecimal(1000));
-            Account usdAccount = new Account();
-            usdAccount.setName("usdAccount");
-            usdAccount.setCurrency(Account.AccountCurrency.USD);
-            usdAccount.setAmount(new BigDecimal(1000));
-            accountRepository.save(eurAccount);
-            accountRepository.save(usdAccount);
-        } else {
-            Account eurAccount = accountRepository.findById(1l).get();
-            eurAccount.setAmount(new BigDecimal(1000));
-            Account usdAccount = accountRepository.findById(2l).get();
-            usdAccount.setAmount(new BigDecimal(1000));
-            accountRepository.save(eurAccount);
-            accountRepository.save(usdAccount);
+        Account eurAccount = new Account();
+        Account usdAccount = new Account();
+        if (!accountRepository.findAll().isEmpty()) {
+            eurAccount = accountRepository.findById(1l).get();
+            usdAccount = accountRepository.findById(2l).get();
         }
-
+        eurAccount.setName("eurAccount");
+        eurAccount.setCurrency(Account.AccountCurrency.EUR);
+        eurAccount.setAmount(new BigDecimal(1000));
+        usdAccount.setName("usdAccount");
+        usdAccount.setCurrency(Account.AccountCurrency.USD);
+        usdAccount.setAmount(new BigDecimal(1000));
+        accountRepository.save(eurAccount);
+        accountRepository.save(usdAccount);
     }
 
     @Test
