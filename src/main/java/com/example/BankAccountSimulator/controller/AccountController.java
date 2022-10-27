@@ -2,7 +2,6 @@ package com.example.BankAccountSimulator.controller;
 
 import com.example.BankAccountSimulator.domain.Account;
 import com.example.BankAccountSimulator.dto.PaymentDTO;
-import com.example.BankAccountSimulator.repository.AccountRepository;
 import com.example.BankAccountSimulator.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
