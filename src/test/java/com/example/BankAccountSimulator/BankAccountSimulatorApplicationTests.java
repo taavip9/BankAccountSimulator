@@ -64,11 +64,11 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountAfterTransfer = accountRepository.findById(2l).get();
         BigDecimal expectedSourceAccountFunds = sourceAccountBeforeTransfer.getAmount().subtract(paymentDTO.getPaymentAmount()).setScale(2, RoundingMode.HALF_EVEN);
         BigDecimal expectedTargetAccountFunds = targetAccountBeforeTransfer.getAmount().add(paymentDTO.getPaymentAmount()).setScale(2, RoundingMode.HALF_EVEN);
-        Assertions.assertTrue(sourceAccountAfterTransfer.getAmount().equals(expectedSourceAccountFunds),
-                "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " EUR");
-        Assertions.assertTrue(targetAccountAfterTransfer.getAmount().compareTo(expectedTargetAccountFunds) == 0,
-                "Expected target account to have: " + expectedTargetAccountFunds + " EUR, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
-        Assertions.assertTrue(!isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
+        Assertions.assertEquals(expectedSourceAccountFunds, sourceAccountAfterTransfer.getAmount(),
+                "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
+        Assertions.assertEquals(expectedTargetAccountFunds, targetAccountAfterTransfer.getAmount(),
+                "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
+        Assertions.assertEquals(false, isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
     }
 
     @Test
@@ -86,11 +86,11 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountAfterTransfer = accountRepository.findById(2l).get();
         BigDecimal expectedSourceAccountFunds = sourceAccountBeforeTransfer.getAmount().subtract(paymentDTO.getPaymentAmount()).setScale(2, RoundingMode.HALF_EVEN);
         BigDecimal expectedTargetAccountFunds = targetAccountBeforeTransfer.getAmount().add(ConversionUtil.convertEurToUsd(paymentDTO.getPaymentAmount())).setScale(2, RoundingMode.HALF_EVEN);
-        Assertions.assertTrue(sourceAccountAfterTransfer.getAmount().equals(expectedSourceAccountFunds),
-                "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " EUR");
-        Assertions.assertTrue(targetAccountAfterTransfer.getAmount().compareTo(expectedTargetAccountFunds) == 0,
-                "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " USD");
-        Assertions.assertTrue(!isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
+        Assertions.assertEquals(expectedSourceAccountFunds, sourceAccountAfterTransfer.getAmount(),
+                "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
+        Assertions.assertEquals(expectedTargetAccountFunds, targetAccountAfterTransfer.getAmount(),
+                "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
+        Assertions.assertEquals(false, isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
     }
 
     @Test
@@ -109,11 +109,12 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountAfterTransfer = accountRepository.findById(1l).get();
         BigDecimal expectedSourceAccountFunds = sourceAccountBeforeTransfer.getAmount().subtract(paymentDTO.getPaymentAmount());
         BigDecimal expectedTargetAccountFunds = targetAccountBeforeTransfer.getAmount().add(ConversionUtil.convertUsdToEur(paymentDTO.getPaymentAmount())).setScale(2, RoundingMode.HALF_EVEN);
-        Assertions.assertTrue(sourceAccountAfterTransfer.getAmount().equals(expectedSourceAccountFunds),
-                "Expected source account to have: " + expectedSourceAccountFunds + " USD, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
-        Assertions.assertTrue(targetAccountAfterTransfer.getAmount().compareTo(expectedTargetAccountFunds) == 0,
-                "Expected target account to have: " + expectedTargetAccountFunds + " EUR, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
-        Assertions.assertTrue(!isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
+        Assertions.assertEquals(expectedSourceAccountFunds, sourceAccountAfterTransfer.getAmount(),
+                "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
+        Assertions.assertEquals(expectedTargetAccountFunds, targetAccountAfterTransfer.getAmount(),
+                "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
+        Assertions.assertEquals(false, isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be false, but is true");
+
     }
 
     @Test
@@ -123,7 +124,7 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
         PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(0));
         boolean isErrorThrown = false;
-        String errorMessage = new String();
+        String errorMessage = null;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
         } catch (ValidationException validationException) {
@@ -141,7 +142,7 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
         PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(-100));
         boolean isErrorThrown = false;
-        String errorMessage = new String();
+        String errorMessage = null;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
         } catch (ValidationException validationException) {
@@ -159,7 +160,7 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
         PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(8500));
         boolean isErrorThrown = false;
-        String errorMessage = new String();
+        String errorMessage = null;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
         } catch (ValidationException validationException) {
@@ -178,7 +179,7 @@ class BankAccountSimulatorApplicationTests {
                 "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
         Assertions.assertEquals(expectedTargetAccountFunds, targetAccountAfterTransfer.getAmount(),
                 "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
-        Assertions.assertTrue(isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be true, but is false");
+        Assertions.assertEquals(true, isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be true, but is false");
         Assertions.assertEquals(expectedErrorMessage, actualErrorMessage, "An unexpected exception occurred, expected error message to be " + expectedErrorMessage + ", but was " + actualErrorMessage);
 
     }
