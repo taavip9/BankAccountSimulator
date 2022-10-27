@@ -22,8 +22,6 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private AccountRepository accountRepository;
 
     @GetMapping()
     public ResponseEntity<List<Account>> getAccounts() {

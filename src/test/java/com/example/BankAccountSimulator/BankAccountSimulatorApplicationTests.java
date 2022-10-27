@@ -53,7 +53,7 @@ class BankAccountSimulatorApplicationTests {
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
         targetAccountBeforeTransfer.setCurrency(Account.AccountCurrency.EUR);
         targetAccountBeforeTransfer = accountRepository.save(targetAccountBeforeTransfer);
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(1l).get(), accountRepository.findById(2l).get(), new BigDecimal(100));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(100));
         boolean isErrorThrown = false;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
@@ -75,7 +75,7 @@ class BankAccountSimulatorApplicationTests {
     void testTransferFundsFromEurToUsdAccount() {
         Account sourceAccountBeforeTransfer = accountRepository.findById(1l).get();
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(1l).get(), accountRepository.findById(2l).get(), new BigDecimal(100));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(100));
         boolean isErrorThrown = false;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
@@ -97,7 +97,7 @@ class BankAccountSimulatorApplicationTests {
     void testTransferFundsFromUsdToEurAccount() {
         Account sourceAccountBeforeTransfer = accountRepository.findById(2l).get();
         Account targetAccountBeforeTransfer = accountRepository.findById(1l).get();
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(2l).get(), accountRepository.findById(1l).get(), new BigDecimal(100));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(100));
         boolean isErrorThrown = false;
         try {
             accountService.transferFundsFromOneAccountToAnother(paymentDTO);
@@ -121,7 +121,7 @@ class BankAccountSimulatorApplicationTests {
         String expectedErrorMessage = "Transaction amount can't be negative";
         Account sourceAccountBeforeTransfer = accountRepository.findById(1l).get();
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(1l).get(), accountRepository.findById(2l).get(), new BigDecimal(0));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(0));
         boolean isErrorThrown = false;
         String errorMessage = new String();
         try {
@@ -139,7 +139,7 @@ class BankAccountSimulatorApplicationTests {
         String expectedErrorMessage = "Transaction amount can't be negative";
         Account sourceAccountBeforeTransfer = accountRepository.findById(1l).get();
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(1l).get(), accountRepository.findById(2l).get(), new BigDecimal(-100));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(-100));
         boolean isErrorThrown = false;
         String errorMessage = new String();
         try {
@@ -157,7 +157,7 @@ class BankAccountSimulatorApplicationTests {
         String expectedErrorMessage = "Source account eurAccount does not have enough funds to complete the transaction";
         Account sourceAccountBeforeTransfer = accountRepository.findById(1l).get();
         Account targetAccountBeforeTransfer = accountRepository.findById(2l).get();
-        PaymentDTO paymentDTO = new PaymentDTO(accountRepository.findById(1l).get(), accountRepository.findById(2l).get(), new BigDecimal(8500));
+        PaymentDTO paymentDTO = new PaymentDTO(sourceAccountBeforeTransfer, targetAccountBeforeTransfer, new BigDecimal(8500));
         boolean isErrorThrown = false;
         String errorMessage = new String();
         try {
@@ -174,12 +174,12 @@ class BankAccountSimulatorApplicationTests {
                                                Account sourceAccountAfterTransfer, Account targetAccountAfterTransfer, boolean isErrorThrown, String actualErrorMessage, String expectedErrorMessage) {
         BigDecimal expectedSourceAccountFunds = sourceAccountBeforeTransfer.getAmount();
         BigDecimal expectedTargetAccountFunds = targetAccountBeforeTransfer.getAmount();
-        Assertions.assertTrue(sourceAccountAfterTransfer.getAmount().equals(expectedSourceAccountFunds),
+        Assertions.assertEquals(expectedSourceAccountFunds, sourceAccountAfterTransfer.getAmount(),
                 "Expected source account to have: " + expectedSourceAccountFunds + " EUR, actual amount on source account: " + sourceAccountAfterTransfer.getAmount() + " USD");
-        Assertions.assertTrue(targetAccountAfterTransfer.getAmount().equals(expectedTargetAccountFunds),
+        Assertions.assertEquals(expectedTargetAccountFunds, targetAccountAfterTransfer.getAmount(),
                 "Expected target account to have: " + expectedTargetAccountFunds + " USD, actual amount on source account: " + targetAccountAfterTransfer.getAmount() + " EUR");
         Assertions.assertTrue(isErrorThrown, "An unexpected exception occurred, expected isErrorThrown to be true, but is false");
-        Assertions.assertTrue(actualErrorMessage.equals(expectedErrorMessage), "An unexpected exception occurred, expected error message to be " + expectedErrorMessage + ", but was " + actualErrorMessage);
+        Assertions.assertEquals(expectedErrorMessage, actualErrorMessage, "An unexpected exception occurred, expected error message to be " + expectedErrorMessage + ", but was " + actualErrorMessage);
 
     }
 

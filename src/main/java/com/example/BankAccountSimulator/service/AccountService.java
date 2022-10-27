@@ -31,19 +31,19 @@ public class AccountService {
     public Account updateAccount(Account account) {
         LOGGER.debug("updating account {}", account);
         Optional<Account> accountToBeModifiedOptional = accountRepository.findById(account.getId());
-        Account account1 = null;
+        Account accountToBeModified = null;
         if (accountToBeModifiedOptional.isPresent()) {
-            Account accountToBeModified = accountToBeModifiedOptional.get();
+            accountToBeModified = accountToBeModifiedOptional.get();
             accountToBeModified.setName(account.getName());
             Account.AccountCurrency newCurrency = account.getCurrency();
             if (!accountToBeModified.getCurrency().equals(newCurrency)) {
                 convertAccountCurrency(account, newCurrency);
             }
             accountToBeModified.setAmount(account.getAmount());
-            account1 = accountRepository.save(account);
+            accountToBeModified = accountRepository.save(account);
             LOGGER.debug("account {} updated", account);
         }
-        return account1;
+        return accountToBeModified;
     }
 
     public List<Account> getAllAccounts() {

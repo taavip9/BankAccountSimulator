@@ -35,10 +35,8 @@ export class AppComponent {
   }
 
   public onSourceAccountChanged() {
-    console.log("test")
     this.potentialDepositAccounts = [];
     this.potentialDepositAccounts.push(...this.accounts);
-    console.log("potentialDepositAccounts", this.potentialDepositAccounts);
     var account = this.accounts.find(account => parseInt(this.sourceAccountId) === account.id);
     var index = this.accounts.indexOf(account ? account : new Account());
     if (index > -1) {

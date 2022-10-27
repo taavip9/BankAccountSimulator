@@ -7,7 +7,7 @@ button {
 }
 
 input {
-  border-bottom: 5px solid !important;
+  border-bottom: 5px solid;
 }
 
 #transfer-button{
