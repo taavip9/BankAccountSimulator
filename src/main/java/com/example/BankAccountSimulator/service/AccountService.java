@@ -63,7 +63,7 @@ public class AccountService {
         if (sourceAccountOptional.isPresent() && targetAccountOptional.isPresent()) {
             Account sourceAccount = sourceAccountOptional.get();
             Account targetAccount = targetAccountOptional.get();
-            LOGGER.debug("Transfering funds from account with id {} to account with id {}", sourceAccount.getId(), targetAccount.getId());
+            LOGGER.debug("Transferring funds from account with id {} to account with id {}", sourceAccount.getId(), targetAccount.getId());
             BigDecimal sourceAccountFunds = sourceAccount.getAmount();
             if (sourceAccountFunds.compareTo(BigDecimal.ZERO) > ZERO && sourceAccountFunds.compareTo(paymentDTO.getPaymentAmount()) >= ZERO) {
                 if (paymentDTO.getPaymentAmount().compareTo(BigDecimal.ZERO) <= ZERO) {
@@ -71,7 +71,7 @@ public class AccountService {
                 }
                 LOGGER.debug("Transfer amount is not null or negative");
                 if (sourceAccount.getCurrency().equals(targetAccount.getCurrency())) {
-                    LOGGER.debug("Accounts use same currency, transfering amount");
+                    LOGGER.debug("Accounts use same currency, transferring amount");
                     targetAccount.setAmount(targetAccount.getAmount().add(paymentDTO.getPaymentAmount()));
                 } else {
                     LOGGER.debug("Accounts use different currency, converting funds from {} to {}", sourceAccount.getCurrency(), targetAccount.getCurrency());
